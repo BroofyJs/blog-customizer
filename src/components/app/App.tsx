@@ -9,10 +9,10 @@ import styles from './App.module.scss';
 import { CSSProperties, useState } from 'react';
 
 export const App = () => {
-	const [data, setData] = useState(defaultArticleState);
+	const [articleState, setArticleState] = useState(defaultArticleState);
 
 	const onSubmit = (params: ArticleStateType) => {
-		setData(params);
+		setArticleState(params);
 	};
 
 	return (
@@ -20,11 +20,11 @@ export const App = () => {
 			className={clsx(styles.main)}
 			style={
 				{
-					'--font-family': data.fontFamilyOption.value,
-					'--font-size': data.fontSizeOption.value,
-					'--font-color': data.fontColor.value,
-					'--container-width': data.contentWidth.value,
-					'--bg-color': data.backgroundColor.value,
+					'--font-family': articleState.fontFamilyOption.value,
+					'--font-size': articleState.fontSizeOption.value,
+					'--font-color': articleState.fontColor.value,
+					'--container-width': articleState.contentWidth.value,
+					'--bg-color': articleState.backgroundColor.value,
 				} as CSSProperties
 			}>
 			<ArticleParamsForm onSubmit={onSubmit} />
