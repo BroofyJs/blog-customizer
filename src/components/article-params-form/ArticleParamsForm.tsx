@@ -15,7 +15,7 @@ import {
 } from '../../constants/articleProps';
 import clsx from 'clsx';
 import styles from './ArticleParamsForm.module.scss';
-import { useCallback, useState, FormEvent } from 'react';
+import { useCallback, useState, FormEvent, useEffect } from 'react';
 
 export const ArticleParamsForm = ({
 	onSubmit,
@@ -40,18 +40,37 @@ export const ArticleParamsForm = ({
 		setIsOpen((prev) => !prev);
 	}, []);
 
-	const handleSubmit = (e: FormEvent) => {
-		e.preventDefault();
-
-		const data: ArticleStateType = {
+	const getFormData = (): ArticleStateType => {
+		return {
 			backgroundColor,
 			contentWidth,
 			fontColor,
 			fontFamilyOption: fontFamily,
 			fontSizeOption: fontSize,
 		};
+	};
 
-		onSubmit(data);
+	const onKeyDown = useCallback(
+		(e: KeyboardEvent) => {
+			if (e.key === 'Enter') {
+				onSubmit(getFormData());
+			}
+		},
+		[fontFamily, fontColor, backgroundColor, contentWidth, fontSize]
+	);
+
+	useEffect(() => {
+		window.addEventListener('keydown', onKeyDown);
+
+		return () => {
+			window.removeEventListener('keydown', onKeyDown);
+		};
+	}, [onKeyDown]);
+
+	const handleSubmit = (e: FormEvent) => {
+		e.preventDefault();
+
+		onSubmit(getFormData());
 	};
 
 	const handleReset = (e: FormEvent) => {
